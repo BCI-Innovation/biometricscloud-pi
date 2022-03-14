@@ -33,7 +33,9 @@ var snapshotCmd = &cobra.Command{
 	Short: "Take a snapshot from the Raspberry Pi camera module",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("bmcpi v1.0")
+		fmt.Println("Taking snapshot from camera now...")
+		doRunSnapshot()
+		fmt.Println("Successfully took snapshot from camera.")
 	},
 }
 
