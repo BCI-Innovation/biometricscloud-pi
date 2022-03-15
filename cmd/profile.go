@@ -29,10 +29,10 @@ var profileCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		aURL := applicationAddress + constants.ProfileEndpointURL
+		aURL := devRemoteServerAddress + constants.ProfileEndpointURL
 
 		// Create a Bearer string by appending string access token
-		var bearer = "Bearer " + accessToken
+		var bearer = "Bearer " + token.AccessToken
 
 		client := &http.Client{}
 		req, _ := http.NewRequest("GET", aURL, nil)

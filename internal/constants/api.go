@@ -1,3 +1,3 @@
 package constants
 
-const ProfileEndpointURL = "/api/v1/profile"
+const ProfileEndpointURL = "/api/v1/account"
