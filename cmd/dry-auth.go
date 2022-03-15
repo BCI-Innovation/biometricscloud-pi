@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"log"
-	"os"
 
 	"github.com/spf13/cobra"
 
@@ -17,11 +16,11 @@ var (
 )
 
 func init() {
-	dryAuthCmd.Flags().StringVarP(&daClientID, "client_id", "a", os.Getenv("BIOMETRICSCLOUD_PI_CLIENT_ID"), "-")
+	dryAuthCmd.Flags().StringVarP(&daClientID, "client_id", "a", devClientID, "Override the existing client ID with new value.")
 	// dryAuthCmd.MarkFlagRequired("client_id")
-	dryAuthCmd.Flags().StringVarP(&daClientSecret, "client_secret", "b", os.Getenv("BIOMETRICSCLOUD_PI_HOST"), "-")
+	dryAuthCmd.Flags().StringVarP(&daClientSecret, "client_secret", "b", devClientSecret, "Override the existing client secret with new value.")
 	// dryAuthCmd.MarkFlagRequired("client_secret")
-	dryAuthCmd.Flags().StringVarP(&daTokenURL, "token_url", "c", os.Getenv("BIOMETRICSCLOUD_PI_HOST"), "-")
+	dryAuthCmd.Flags().StringVarP(&daTokenURL, "token_url", "c", devTokenURL, "Override the existing token URL with new value.")
 	// dryAuthCmd.MarkFlagRequired("token_url")
 	rootCmd.AddCommand(dryAuthCmd)
 }
@@ -31,14 +30,15 @@ var dryAuthCmd = &cobra.Command{
 	Short: "",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
+		// Process the overrides.
 		if daClientID == "" {
-			log.Fatal("Missing `client_id` value.")
+			daClientID = devClientID
 		}
 		if daClientSecret == "" {
-			log.Fatal("Missing `client_secret` value.")
+			daClientSecret = devClientSecret
 		}
 		if daTokenURL == "" {
-			log.Fatal("Missing `token_url` value.")
+			daTokenURL = devTokenURL
 		}
 
 		log.Println("Beginning dry run of client credential based authorization...")
