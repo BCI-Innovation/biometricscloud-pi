@@ -60,7 +60,7 @@ func doRunServe() {
 	}
 
 	// Initialize the remote service
-	rs := remote.New(devRemoteServerAddress, dev.ClientID, dev.ClientSecret, devTokenURL, cfg)
+	rs := remote.New(devRemoteServerAddress, dev.ClientID, dev.ClientSecret, devTokenURL)
 
 	// Initialize our application.
 	app, err := app.New(cam, rs)

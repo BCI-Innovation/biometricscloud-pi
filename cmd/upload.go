@@ -76,7 +76,7 @@ func doRunUpload() {
 		log.Fatal(err)
 	}
 
-	rs := remote.New(devRemoteServerAddress, dev.ClientID, dev.ClientSecret, devTokenURL, cfg)
+	rs := remote.New(devRemoteServerAddress, dev.ClientID, dev.ClientSecret, devTokenURL)
 	err = rs.SubmitPhotoSample(cm.ID, bytes, filePath)
 	if err != nil {
 		log.Fatal(err)

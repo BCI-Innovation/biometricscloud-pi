@@ -25,7 +25,14 @@ type Remote struct {
 	cfg           clientcredentials.Config
 }
 
-func New(ra string, cid string, cs string, turl string, cfg clientcredentials.Config) *Remote {
+func New(ra string, cid string, cs string, turl string) *Remote {
+	// Setup our oAuth2 client credentials authentication client.
+	cfg := clientcredentials.Config{
+		ClientID:     cid,
+		ClientSecret: cs,
+		Scopes:       []string{"all"},
+		TokenURL:     turl,
+	}
 	return &Remote{
 		serverAddress: ra,
 		clientID:      cid,

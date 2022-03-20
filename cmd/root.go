@@ -30,7 +30,7 @@ func init() {
 	if ra == "" {
 		log.Fatal("BIOMETRICSCLOUD_PI_REMOTE_SERVER_ADDRESS: D.N.E.")
 	}
-	devTokenURL = constants.TokenEndpointURL
+	devTokenURL = ra + constants.TokenEndpointURL
 	ci := os.Getenv("BIOMETRICSCLOUD_PI_CLIENT_ID")
 	cs := os.Getenv("BIOMETRICSCLOUD_PI_CLIENT_SECRET")
 	w, err := strconv.ParseInt(os.Getenv("BIOMETRICSCLOUD_PI_WIDTH"), 10, 64)
@@ -48,14 +48,6 @@ func init() {
 	wg := os.Getenv("BIOMETRICSCLOUD_PI_WK_GRP")
 	if wg == "" {
 		wg = "./"
-	}
-
-	// Setup our oAuth2 client credentials authentication client.
-	cfg = clientcredentials.Config{
-		ClientID:     ci,
-		ClientSecret: cs,
-		Scopes:       []string{"all"},
-		TokenURL:     devTokenURL,
 	}
 
 	// Attach
