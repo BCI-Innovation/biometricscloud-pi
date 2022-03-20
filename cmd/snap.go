@@ -9,14 +9,10 @@ import (
 )
 
 func init() {
-	snapCmd.Flags().IntVarP(&width, "width", "a", 1640, "Width of the image")
-	snapCmd.MarkFlagRequired("width")
-	snapCmd.Flags().IntVarP(&height, "height", "b", 1232, "Width of the image")
-	snapCmd.MarkFlagRequired("height")
-	snapCmd.Flags().StringVarP(&format, "format", "c", "png", "Type of image")
-	snapCmd.MarkFlagRequired("format")
+	snapCmd.Flags().IntVarP(&width, "width", "a", 1640, "Override initial width setting of the image")
+	snapCmd.Flags().IntVarP(&height, "height", "b", 1232, "Override initial height setting of the image")
+	snapCmd.Flags().StringVarP(&format, "format", "c", "jpg", "Override initial format setting of image")
 	snapCmd.Flags().StringVarP(&workingDirectoryAbsoluteFilePath, "workingDir", "d", "/home/pi", "The absolute file path to the directory where all photos are saved")
-	snapCmd.MarkFlagRequired("workingDir")
 	rootCmd.AddCommand(snapCmd)
 }
 

@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// LibCameraStill represents the Golang wrapper over the `libcamera-still` command line application that is found in the Raspberry Pi OS.
+// LibCameraStill represents the Golang wrapper over the `libcamera-still` command line application that is found in the Raspberry Pi OS. For more information about this library visit: https://github.com/raspberrypi/libcamera-apps/blob/main/apps/libcamera_still.cpp
 type LibCameraStill struct {
 	// metricID is the  device camera attached to the user account which is a unique ID value registered at biometricscloud.net web-service.
 	metricID   int
