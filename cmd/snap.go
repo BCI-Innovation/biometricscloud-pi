@@ -12,7 +12,7 @@ func init() {
 	snapCmd.Flags().IntVarP(&width, "width", "a", 1640, "Override initial width setting of the image")
 	snapCmd.Flags().IntVarP(&height, "height", "b", 1232, "Override initial height setting of the image")
 	snapCmd.Flags().StringVarP(&format, "format", "c", "jpg", "Override initial format setting of image")
-	snapCmd.Flags().StringVarP(&workingDirectoryAbsoluteFilePath, "workingDir", "d", "/home/pi", "The absolute file path to the directory where all photos are saved")
+	snapCmd.Flags().StringVarP(&workingDirectoryAbsoluteFilePath, "workingDir", "d", "./", "The absolute file path to the directory where all photos are saved")
 	rootCmd.AddCommand(snapCmd)
 }
 

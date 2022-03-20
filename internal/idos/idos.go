@@ -1,5 +1,7 @@
 package idos
 
+import "time"
+
 type DeviceCreateRequestIDO struct {
 	Manufacturer string `json:"manufacturer"`
 	DeviceCode   string `json:"device_code"`
@@ -41,4 +43,17 @@ type MetricResponseIDO struct {
 	QuantityType      string `json:"quantity_type,omitempty"`
 	QuantityTypeOther string `json:"quantity_type_other,omitempty"`
 	IsTestMode        bool   `json:"is_test_mode,omitempty"`
+}
+
+// Note: https://github.com/BCI-Innovation/biometricscloud-backend/blob/master/internal/idos/photo_sample.go
+
+type PhotoSampleCreateRequestIDO struct {
+	MetricID                  int       `json:"metric_id,omitempty"`                    // Required
+	StartDate                 time.Time `json:"start_date,omitempty"`                   // Required
+	EndDate                   time.Time `json:"end_date,omitempty"`                     // Required
+	SampleMotionContext       string    `json:"sample_motion_context,omitempty"`        // Optional
+	SampleSensorLocation      int8      `json:"sample_sensor_location,omitempty"`       // Optional
+	SampleSensorLocationOther string    `json:"sample_sensor_location_other,omitempty"` // Optional
+	UploadContent             string    `json:"upload_content"`
+	UploadFilename            string    `json:"upload_filename"`
 }

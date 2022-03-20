@@ -16,12 +16,12 @@ var (
 )
 
 func init() {
-	dryAuthCmd.Flags().StringVarP(&daClientID, "client_id", "a", devClientID, "Override the existing client ID with new value.")
-	// dryAuthCmd.MarkFlagRequired("client_id")
-	dryAuthCmd.Flags().StringVarP(&daClientSecret, "client_secret", "b", devClientSecret, "Override the existing client secret with new value.")
-	// dryAuthCmd.MarkFlagRequired("client_secret")
-	dryAuthCmd.Flags().StringVarP(&daTokenURL, "token_url", "c", devTokenURL, "Override the existing token URL with new value.")
-	// dryAuthCmd.MarkFlagRequired("token_url")
+	dryAuthCmd.Flags().StringVarP(&daClientID, "client_id", "a", "", "Override the existing client ID with new value.")
+	dryAuthCmd.MarkFlagRequired("client_id")
+	dryAuthCmd.Flags().StringVarP(&daClientSecret, "client_secret", "b", "", "Override the existing client secret with new value.")
+	dryAuthCmd.MarkFlagRequired("client_secret")
+	dryAuthCmd.Flags().StringVarP(&daTokenURL, "token_url", "c", "", "Override the existing token URL with new value.")
+	dryAuthCmd.MarkFlagRequired("token_url")
 	rootCmd.AddCommand(dryAuthCmd)
 }
 
@@ -30,17 +30,6 @@ var dryAuthCmd = &cobra.Command{
 	Short: "",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		// Process the overrides.
-		if daClientID == "" {
-			daClientID = devClientID
-		}
-		if daClientSecret == "" {
-			daClientSecret = devClientSecret
-		}
-		if daTokenURL == "" {
-			daTokenURL = devTokenURL
-		}
-
 		log.Println("Beginning dry run of client credential based authorization...")
 
 		cfg := clientcredentials.Config{

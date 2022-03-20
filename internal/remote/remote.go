@@ -6,11 +6,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"path"
 	"time"
 
 	"github.com/BCI-Innovation/biometricscloud-pi/internal/constants"
+	"github.com/BCI-Innovation/biometricscloud-pi/internal/idos"
 	"github.com/BCI-Innovation/biometricscloud-pi/internal/utils"
 	"golang.org/x/oauth2/clientcredentials"
 )
@@ -48,24 +50,11 @@ func (r *Remote) SubmitPhotoSample(metricID int, bytes []byte, filePath string) 
 	return r.uploadData(content, filename, fileExt, metricID)
 }
 
-// Note: https://github.com/BCI-Innovation/biometricscloud-backend/blob/master/internal/idos/photo_sample.go
-
-type PhotoSampleCreateRequestIDO struct {
-	MetricID                  int       `json:"metric_id,omitempty"`                    // Required
-	StartDate                 time.Time `json:"start_date,omitempty"`                   // Required
-	EndDate                   time.Time `json:"end_date,omitempty"`                     // Required
-	SampleMotionContext       string    `json:"sample_motion_context,omitempty"`        // Optional
-	SampleSensorLocation      int8      `json:"sample_sensor_location,omitempty"`       // Optional
-	SampleSensorLocationOther string    `json:"sample_sensor_location_other,omitempty"` // Optional
-	UploadContent             string    `json:"upload_content"`
-	UploadFilename            string    `json:"upload_filename"`
-}
-
 func (r *Remote) uploadData(content string, filename string, fileExt string, metricID int) error {
 	// Generate the URL we will be making the submission to.
 	aURL := r.serverAddress + constants.PhotoSampleListCreateEndpointURL
 	// Generate our payload.
-	data := &PhotoSampleCreateRequestIDO{
+	data := &idos.PhotoSampleCreateRequestIDO{
 		MetricID:       metricID,
 		StartDate:      time.Now(),
 		EndDate:        time.Now(),
@@ -77,6 +66,7 @@ func (r *Remote) uploadData(content string, filename string, fileExt string, met
 	// https://github.com/go-oauth2/oauth2/blob/b208c14e621016995debae2fa7dc20c8f0e4f6f8/example/client/client.go#L116
 	t, err := r.cfg.Token(context.Background())
 	if err != nil {
+		log.Println("uploadData | r.cfg.Token | err:", err)
 		return err
 	}
 
@@ -99,6 +89,7 @@ func (r *Remote) uploadData(content string, filename string, fileExt string, met
 	// Send req using http Client
 	resp, err := client.Do(req)
 	if err != nil {
+		log.Println("uploadData | client.Do | err:", err)
 		return err
 	}
 
@@ -107,6 +98,7 @@ func (r *Remote) uploadData(content string, filename string, fileExt string, met
 	// Read the response body
 	responseBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Println("uploadData | ioutil.ReadAll | err:", err)
 		return err
 	}
 

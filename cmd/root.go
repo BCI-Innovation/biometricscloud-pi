@@ -8,6 +8,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2/clientcredentials"
+
+	"github.com/BCI-Innovation/biometricscloud-pi/internal/constants"
 )
 
 var (
@@ -28,9 +30,9 @@ func init() {
 	if ra == "" {
 		log.Fatal("BIOMETRICSCLOUD_PI_REMOTE_SERVER_ADDRESS: D.N.E.")
 	}
+	devTokenURL = constants.TokenEndpointURL
 	ci := os.Getenv("BIOMETRICSCLOUD_PI_CLIENT_ID")
 	cs := os.Getenv("BIOMETRICSCLOUD_PI_CLIENT_SECRET")
-	tu := os.Getenv("BIOMETRICSCLOUD_PI_TOKEN_URL")
 	w, err := strconv.ParseInt(os.Getenv("BIOMETRICSCLOUD_PI_WIDTH"), 10, 64)
 	if err != nil {
 		w = 1640
@@ -53,14 +55,13 @@ func init() {
 		ClientID:     ci,
 		ClientSecret: cs,
 		Scopes:       []string{"all"},
-		TokenURL:     tu,
+		TokenURL:     devTokenURL,
 	}
 
 	// Attach
 	rootCmd.PersistentFlags().StringVar(&devRemoteServerAddress, "remoteServerAddress", ra, "The address of BiometricsCloud remote server.")
 	rootCmd.PersistentFlags().StringVar(&devClientID, "clientID", ci, "The oAuth2 client ID of this device.")
 	rootCmd.PersistentFlags().StringVar(&devClientSecret, "clientSecret", cs, "TThe oAuth2 client secret of this device.")
-	rootCmd.PersistentFlags().StringVar(&devTokenURL, "tokenURL", tu, "The oAuth2 token API endpoint of the platform")
 	rootCmd.PersistentFlags().IntVar(&width, "weight", int(w), "-")
 	rootCmd.PersistentFlags().IntVar(&height, "height", int(ht), "-")
 	rootCmd.PersistentFlags().StringVar(&format, "format", f, "")

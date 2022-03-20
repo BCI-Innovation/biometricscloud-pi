@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -37,6 +38,17 @@ func toBase64(b []byte) string {
 }
 
 func doRunUpload() {
+	// For debugging purposes.
+	fmt.Println("filePath:", filePath)
+	fmt.Println("width:", width)
+	fmt.Println("height:", height)
+	fmt.Println("format:", format)
+	fmt.Println("wkgrp:", workingDirectoryAbsoluteFilePath)
+	fmt.Println("remote:", devRemoteServerAddress)
+	fmt.Println("devClientID:", devClientID)
+	fmt.Println("devClientSecret:", devClientSecret)
+	fmt.Println("devTokenURL:", devTokenURL)
+
 	// Read our device.
 	deviceBytes, err := ioutil.ReadFile("./device.json")
 	if err != nil {
