@@ -26,6 +26,7 @@ func NewLibCameraStill(metricID int, width int, height int, format string, worki
 	// See available formats via https://www.raspberrypi.com/documentation/accessories/camera.html#encoders
 	fileFormat := map[string]string{
 		"png":    "png",
+		"jpg":    "jpg",
 		"bmp":    "bmp",
 		"rgb":    "data",
 		"yuv420": "data",

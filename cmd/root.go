@@ -41,7 +41,7 @@ func init() {
 	}
 	f := os.Getenv("BIOMETRICSCLOUD_PI_FORMAT")
 	if f != "" {
-		f = "jpeg"
+		f = "jpg"
 	}
 	wg := os.Getenv("BIOMETRICSCLOUD_PI_WK_GRP")
 	if wg == "" {
