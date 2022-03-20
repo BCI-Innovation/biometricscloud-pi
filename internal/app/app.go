@@ -123,6 +123,12 @@ func (s *App) executeAtTick(dt time.Time) {
 		log.Fatal(err)
 	}
 
+	fmt.Println("Deleting image")
+	err = os.Remove(filePath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Println("Finished submitting!")
 }
 
