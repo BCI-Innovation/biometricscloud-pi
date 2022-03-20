@@ -20,28 +20,32 @@ var (
 	devClientSecret                  string
 	devTokenURL                      string
 	cfg                              clientcredentials.Config
-	devMetricID                      int
 )
 
 func init() {
 	// Extract the envrionment variables which our application will be using.
 	ra := os.Getenv("BIOMETRICSCLOUD_PI_REMOTE_SERVER_ADDRESS")
+	if ra == "" {
+		log.Fatal("BIOMETRICSCLOUD_PI_REMOTE_SERVER_ADDRESS: D.N.E.")
+	}
 	ci := os.Getenv("BIOMETRICSCLOUD_PI_CLIENT_ID")
 	cs := os.Getenv("BIOMETRICSCLOUD_PI_CLIENT_SECRET")
 	tu := os.Getenv("BIOMETRICSCLOUD_PI_TOKEN_URL")
 	w, err := strconv.ParseInt(os.Getenv("BIOMETRICSCLOUD_PI_WIDTH"), 10, 64)
 	if err != nil {
-		log.Fatal(err)
+		w = 1640
 	}
-	ht, err := strconv.ParseInt(os.Getenv("BIOMETRICSCLOUD_PI_HEIGHT"), 10, 64)
+	ht, err := strconv.ParseInt(os.Getenv("BIOMETRICSCLOUD_PI_HEIGHT:"), 10, 64)
 	if err != nil {
-		log.Fatal(err)
+		ht = 1232
 	}
 	f := os.Getenv("BIOMETRICSCLOUD_PI_FORMAT")
+	if f != "" {
+		f = "jpeg"
+	}
 	wg := os.Getenv("BIOMETRICSCLOUD_PI_WK_GRP")
-	mid, err := strconv.ParseInt(os.Getenv("BIOMETRICSCLOUD_PI_DEVICE_CAMERA_METRIC_ID"), 10, 64)
-	if err != nil {
-		log.Fatal(err)
+	if wg == "" {
+		wg = "./"
 	}
 
 	// Setup our oAuth2 client credentials authentication client.
@@ -61,7 +65,6 @@ func init() {
 	rootCmd.PersistentFlags().IntVar(&height, "height", int(ht), "-")
 	rootCmd.PersistentFlags().StringVar(&format, "format", f, "")
 	rootCmd.PersistentFlags().StringVar(&workingDirectoryAbsoluteFilePath, "workGroup", wg, "./")
-	rootCmd.PersistentFlags().IntVar(&devMetricID, "metricID", int(mid), "-")
 }
 
 var rootCmd = &cobra.Command{

@@ -1,6 +1,12 @@
 # biometricscloud-pi
 BiometricsCloud IoT application for the Raspberry Pi
 
+### Pre-Configuration
+
+```shell
+export BIOMETRICSCLOUD_PI_REMOTE_SERVER_ADDRESS=http://127.0.0.1:8000
+```
+
 ### Register Account
 
 1. Register an account.

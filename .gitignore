@@ -84,3 +84,7 @@ bin/*
 
 # Private notes
 private.txt
+
+# Do not save API-based configuration
+device.json
+camera.json

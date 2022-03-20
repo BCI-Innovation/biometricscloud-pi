@@ -2,11 +2,14 @@ package cmd
 
 import (
 	"encoding/base64"
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/spf13/cobra"
 
+	"github.com/BCI-Innovation/biometricscloud-pi/internal/idos"
 	"github.com/BCI-Innovation/biometricscloud-pi/internal/remote"
 )
 
@@ -34,13 +37,35 @@ func toBase64(b []byte) string {
 }
 
 func doRunUpload() {
+	// Read our device.
+	deviceBytes, err := ioutil.ReadFile("./device.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+	dev := &idos.DeviceCreateResponseIDO{}
+	err = json.Unmarshal(deviceBytes, &dev)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Read our camera.
+	cameraBytes, err := ioutil.ReadFile("./camera.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+	cm := &idos.MetricResponseIDO{}
+	err = json.Unmarshal(cameraBytes, &cm)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	bytes, err := os.ReadFile(filePath) // Load entire file into memory.
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	r := remote.New(devRemoteServerAddress, devClientID, devClientSecret, devTokenURL, cfg)
-	err = r.SubmitPhotoSample(devMetricID, bytes, filePath)
+	rs := remote.New(devRemoteServerAddress, dev.ClientID, dev.ClientSecret, devTokenURL, cfg)
+	err = rs.SubmitPhotoSample(cm.ID, bytes, filePath)
 	if err != nil {
 		log.Fatal(err)
 	}

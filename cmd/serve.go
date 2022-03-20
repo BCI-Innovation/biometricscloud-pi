@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
@@ -11,6 +13,7 @@ import (
 
 	"github.com/BCI-Innovation/biometricscloud-pi/internal/app"
 	"github.com/BCI-Innovation/biometricscloud-pi/internal/camera"
+	"github.com/BCI-Innovation/biometricscloud-pi/internal/idos"
 	"github.com/BCI-Innovation/biometricscloud-pi/internal/remote"
 )
 
@@ -28,25 +31,36 @@ var serveCmd = &cobra.Command{
 }
 
 func doRunServe() {
-	// For debugging purposes only.
-	fmt.Println("width:", width)
-	fmt.Println("height:", height)
-	fmt.Println("format:", format)
-	fmt.Println("workingDirectoryAbsoluteFilePath:", workingDirectoryAbsoluteFilePath)
-	fmt.Println("devRemoteServerAddress:", devRemoteServerAddress)
-	fmt.Println("devClientID:", devClientID)
-	fmt.Println("devClientSecret:", devClientSecret)
-	fmt.Println("devTokenURL:", devTokenURL)
-	fmt.Println()
+	// Read our device.
+	deviceBytes, err := ioutil.ReadFile("./device.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+	dev := &idos.DeviceCreateResponseIDO{}
+	err = json.Unmarshal(deviceBytes, &dev)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// Initialize the camera.
-	cam, err := camera.NewLibCameraStill(devMetricID, width, height, format, workingDirectoryAbsoluteFilePath)
+	// Read our camera.
+	cameraBytes, err := ioutil.ReadFile("./camera.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+	cm := &idos.MetricResponseIDO{}
+	err = json.Unmarshal(cameraBytes, &cm)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Initialize the camera hardware.
+	cam, err := camera.NewLibCameraStill(cm.ID, width, height, format, workingDirectoryAbsoluteFilePath)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Initialize the remote service
-	rs := remote.New(devRemoteServerAddress, devClientID, devClientSecret, devTokenURL, cfg)
+	rs := remote.New(devRemoteServerAddress, dev.ClientID, dev.ClientSecret, devTokenURL, cfg)
 
 	// Initialize our application.
 	app, err := app.New(cam, rs)
